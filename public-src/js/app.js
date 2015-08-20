@@ -1,8 +1,8 @@
-window.DEBUG = true
+window.DEBUG = true;
 
-var riot = require('riot')
+var riot = require('riot');
 
-require('./_tags')
+require('./_tags');
 
-var todosStore = require('./store/todos')
-riot.mount('todo', {store: todosStore, data: todosStore.fetch()})
+var todosStore = require('./store/todos');
+riot.mount('todo', {store: todosStore, data: todosStore.fetch()});

@@ -1,0 +1,8 @@
+<% extend 'layout.ect' %>
+
+<h1>All posts</h1>
+<ul>
+  <% for id in Object.keys(@entries) : %>
+  <li><a href="/posts/<%= id %>"><%= @entries[id].title %></a></li>
+  <% end %>
+</ul>
