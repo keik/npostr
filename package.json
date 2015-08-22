@@ -4,8 +4,8 @@
   "description": "",
   "scripts": {
     "start": "node ./bin/www",
-    "start:dev": "npm run lint & npm run less & npm run riot && npm run lint:watch & npm run less:watch & npm run riot:watch & mkdir -p public/js && watchify public-src/js/app.js -o public/js/app.js -v & nodemon ./bin/www --ignore **/flycheck_*",
-    "test": "false",
+    "start:dev": "npm run lint & npm run less & npm run riot && npm run lint:watch & npm run less:watch & npm run riot:watch & mkdir -p public/js && watchify public-src/js/app.js -o public/js/app.js -v & DEBUG=npostr:* nodemon --debug=6000 ./bin/www --ignore **/flycheck_*",
+    "test": "DEBUG=npostr:* NODE_ENV=test mocha tests/spec* --reporter nyan --debug=7000",
     "build": "false",
     "----------": "----------",
     "lint": "eslint .",
@@ -30,9 +30,15 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "chai": "^3.2.0",
+    "debug": "^2.2.0",
     "eslint": "^1.2.0",
     "less": "^2.5.1",
+    "mocha": "^2.2.5",
     "nodemon": "^1.4.1",
+    "rimraf": "^2.4.2",
+    "sequelize-cli": "^1.7.4",
+    "supertest": "^1.0.1",
     "watchf": "^0.1.0",
     "watchify": "^3.3.1",
     "wiredep": "^2.2.2"
@@ -48,6 +54,8 @@
     "marked": "^0.3.5",
     "morgan": "~1.6.1",
     "riot": "^2.2.4",
-    "serve-favicon": "~2.3.0"
+    "sequelize": "^3.6.0",
+    "serve-favicon": "~2.3.0",
+    "sqlite3": "^3.0.10"
   }
 }
