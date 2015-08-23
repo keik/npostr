@@ -1,8 +1,11 @@
 window.DEBUG = true;
 
+require('./polyfills');
+
 var riot = require('riot');
 
-require('./_tags');
+require('./_app-tags');
 
-var todosStore = require('./store/todos');
-riot.mount('todo', {store: todosStore, data: todosStore.fetch()});
+var postsStore = require('./store/posts');
+
+riot.mount('posts', {store: postsStore});

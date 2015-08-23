@@ -1,0 +1,20 @@
+header {
+  h1 {
+    float: left;
+  }
+  nav {
+    float: right;
+    ul {
+      list-style: none;
+      li {
+        float: left;
+        padding: 0 0 0 12px;
+      }
+    }
+  }
+  &:after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+}

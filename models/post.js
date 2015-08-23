@@ -3,7 +3,8 @@ module.exports = function(sequelize, DataTypes) {
   var Post = sequelize.define('Post', {
     alias: {type: DataTypes.STRING, unique: true},
     title: DataTypes.STRING,
-    content: DataTypes.TEXT
+    content: DataTypes.TEXT,
+    htmlizedContent: DataTypes.TEXT
   }, {
     classMethods: {
       associate: function(models) {

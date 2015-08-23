@@ -8,6 +8,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
+var rconsole = require('./routes/console');
 var rposts = require('./routes/posts');
 
 var ECT = require('ect');
@@ -27,8 +28,27 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// content-negotiation support for `.ext` URI
+app.use(function(req, res, next) {
+  var parts = req.url.match(/(.+)\.(json|html)$/);
+  if (parts) {
+    req.url = parts[1];
+    switch (parts[2]) {
+    case 'html':
+      req.headers.accept = 'text/html';
+      break;
+    case 'json':
+      req.headers.accept = 'application/json';
+      break;
+    default:
+    }
+  }
+  next();
+});
+
 // routings
 app.use('/', routes);
+app.use('/console', rconsole);
 app.use('/posts', rposts);
 
 // catch 404 and forward to error handler

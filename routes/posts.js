@@ -1,7 +1,9 @@
 var d = require('debug')('npostr:router:posts');
 
 var express = require('express'),
+    marked = require('marked'),
     models = require('../models');
+
 
 var router = express.Router();
 
@@ -9,7 +11,6 @@ var router = express.Router();
 /* eslint no-spaced-func: [0] */
 router.get   ('/',         index);
 router.get   ('/:id',      show);
-router.get   ('/',         new_);
 router.post  ('/',         create);
 router.get   ('/:id/edit', edit);
 router.put   ('/:id',      update);
@@ -19,7 +20,14 @@ function index(req, res, next) {
   d('#index');
 
   models.Post.findAll().then(function(posts) {
-    res.json(posts);
+    res.format({
+      html: function() {
+        res.render('posts/index', {posts: posts});
+      },
+      json: function() {
+        res.json(posts);
+      }
+    });
   });
 }
 
@@ -42,12 +50,6 @@ function show(req, res, next) {
     });
 }
 
-function new_(req, res, next) {
-  d('#new_');
-  res.sendStatus(501); // TODO
-
-}
-
 /**
  * Create a new post.
  * @param {req} req req
@@ -61,10 +63,15 @@ function create(req, res, next) {
   d('#create');
 
   // TODO move validation to model logic
-  var alias = req.body.alias || Number(new Date());
+  var alias = req.body.alias || String(Number(new Date()));
   if (alias.match(/[^0-9a-z\-]/)) {
     throw new Error('`alias` must not contain `0-9`, `a-z` and `-`');
   }
+
+  var post = req.body;
+
+  // generate HTML
+  post.htmlizedContent = marked(post.content);
 
   models.Post.create(req.body).then(function() {
     res.sendStatus(201);
@@ -86,7 +93,17 @@ function update(req, res, next) {
 
 function destroy(req, res, next) {
   d('#destroy');
-  res.sendStatus(501); // TODO
+
+  models.Post.destroy({
+    where: {id: req.params.id}
+  }).then(function(deletedCount) {
+    if (deletedCount > 0)
+      res.sendStatus(200);
+    res.sendStatus(404);
+  }).error(function(e) {
+    // TODO handling
+    throw e;
+  });
 }
 
 module.exports = router;

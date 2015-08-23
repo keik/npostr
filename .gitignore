@@ -3,6 +3,6 @@ npm-debug.log
 bower_components
 public/js
 public/css
-public-src/js/_tags.js
+public-src/js/_*tags.js
 tmp
 db.*.sqlite

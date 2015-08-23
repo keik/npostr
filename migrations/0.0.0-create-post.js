@@ -19,6 +19,9 @@ module.exports = {
       content: {
         type: Sequelize.TEXT
       },
+      htmlizedContent: {
+        type: Sequelize.TEXT
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
