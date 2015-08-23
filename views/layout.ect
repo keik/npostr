@@ -8,19 +8,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.7/styles/zenburn.min.css">
   </head>
   <body>
 
     <header>
-      <h1><a href="/">TITLE</a></h1>
-      <nav>
-        <ul>
-          <li><a href="/console">Console</a></li>
-        </ul>
-      </nav>
+      <div class="container">
+        <h1><a href="/">TITLE</a></h1>
+        <nav>
+          <ul>
+            <li><a href="/console">Console</a></li>
+          </ul>
+        </nav>
+      </div>
     </header>
 
-    <% content %>
+    <div class="container">
+      <% content %>
+    </div>
 
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.7/highlight.min.js"></script>
   </body>
 </html>

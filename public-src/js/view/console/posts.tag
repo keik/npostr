@@ -30,13 +30,11 @@
     var self = this;
     var postsStore = opts.store;
 
-    sync();
-
     this.on('update', function() {
       d('#updated');
     });
 
-    function sync() {
+    this.sync = function() {
       d('#sync');
 
       postsStore.fetch().then(function(res) {
@@ -49,19 +47,19 @@
       });
     }
 
-    function destroy(e) {
+    this.destroy = function(e) {
       d('#destroy');
 
       postsStore.destroy(e.item.id).then(function(res) {
         if (res.status === 200) {
           d('#destroy success');
-          sync();
+          self.sync();
         }
       }).catch(function(e) {
         throw e;
       });
-
     }
 
+    this.sync();
   </script>
 </posts>

@@ -71,6 +71,9 @@ function create(req, res, next) {
   var post = req.body;
 
   // generate HTML
+  marked.setOptions({
+    langPrefix: ''
+  });
   post.htmlizedContent = marked(post.content);
 
   models.Post.create(req.body).then(function() {

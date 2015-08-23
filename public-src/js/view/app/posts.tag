@@ -1,10 +1,10 @@
 <posts>
-  <!--
-  <post each={ post in posts } data={ post }></post>
-  -->
 
   <section class="post" each={ posts }>
     <h1>{title}</h1>
+    <p>
+      {createdAt}
+    </p>
     <raw content={ htmlizedContent }></raw>
   </section>
 
@@ -14,11 +14,21 @@
     var self = this;
     var postsStore = opts.store;
 
+    this.on('update', function() {
+      d('#updated');
+    });
+
     postsStore.fetch().then(function(res) {
       return res.text();
     }).then(function(body) {
       d('#fetch success');
       self.update({posts: JSON.parse(body)});
+
+      // highlighting
+      var codes = self.root.querySelectorAll('pre code');
+      for (var i = 0, len = codes.length; i < len; i++) {
+        window.hljs.highlightBlock(codes[i]);
+      }
     }).catch(function(e) {
       throw e;
     });
