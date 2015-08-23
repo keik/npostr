@@ -3,14 +3,20 @@
 Light CMS
 
 
+## Build
+
+```
+% npm run build
+```
+
 ## Deploy
 
-```sh
+```
 % npm start
 ```
 
 ## Dev
 
-```sh
-% npm start:dev
+```
+% npm run start:dev
 ```

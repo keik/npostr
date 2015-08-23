@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "",
   "scripts": {
-    "start": "npm run build && node ./bin/www",
+    "start": "node ./bin/www",
     "start:dev": "npm run lint & npm run less & npm run riot && npm run lint:watch & npm run less:watch & npm run riot:watch & mkdirp public/js && watchify public-src/js/app.js -o public/js/app.js -v & watchify public-src/js/console.js -o public/js/console.js -v & DEBUG=npostr:* nodemon --debug ./bin/www --ignore '**flycheck_*' --ignore 'public*'",
     "test": "DEBUG=npostr:* NODE_ENV=test mocha tests/spec* --reporter nyan --debug",
     "build": "npm run lint && npm run less && npm run riot && mkdirp public/js && browserify public-src/js/app.js -o public/js/app.js && browserify public-src/js/console.js -o public/js/console.js",
