@@ -1,6 +1,10 @@
 /* eslint no-console: [0] */
 
 module.exports = {
+
+  /**
+   * easy logger for client
+   */
   d: function(tag) {
     return function() {
       var newArgs = Array.prototype.concat.apply(

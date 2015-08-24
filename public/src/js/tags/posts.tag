@@ -9,8 +9,9 @@
   </section>
 
   <script>
-    var d = require('./util').d('[v] posts');
+    require('./raw.tag');
 
+    var d = require('../utils').d('[v] posts');
     var self = this;
     var postsStore = opts.store;
 

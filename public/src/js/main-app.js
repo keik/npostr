@@ -4,8 +4,8 @@ require('./polyfills');
 
 var riot = require('riot');
 
-require('./_app-tags');
+require('./tags/posts.tag');
 
-var postsStore = require('./store/posts');
+var postsStore = require('./stores/posts.js');
 
 riot.mount('posts', {store: postsStore});

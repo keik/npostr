@@ -25,7 +25,7 @@
 
   </section>
   <script>
-    var d = require('./util').d('[v] posts');
+    var d = require('../utils').d('[v] posts');
 
     var self = this;
     var postsStore = opts.store;

@@ -4,16 +4,23 @@
   "description": "",
   "scripts": {
     "start": "node ./bin/www",
-    "start:dev": "npm run lint & npm run less & npm run riot && npm run lint:watch & npm run less:watch & npm run riot:watch & mkdirp public/js && watchify public-src/js/app.js -o public/js/app.js -v & watchify public-src/js/console.js -o public/js/console.js -v & DEBUG=npostr:* nodemon --debug ./bin/www --ignore '**flycheck_*' --ignore 'public*'",
     "test": "DEBUG=npostr:* NODE_ENV=test mocha tests/spec* --reporter nyan --debug",
-    "build": "npm run lint && npm run less && npm run riot && mkdirp public/js && browserify public-src/js/app.js -o public/js/app.js && browserify public-src/js/console.js -o public/js/console.js",
-    "----------": "----------",
+    "\n* USEFUL frontends": "",
+    "start:dev": "npm run lint:watch & npm run less:watch & npm run watchify & npm run nodemon",
+    "build": "npm run clean && npm run lint && npm run less && npm run browserify",
+    "\n* subtasks": "",
+    "clean": "rimraf public/dist && mkdirp public/dist",
     "lint": "eslint .",
     "lint:watch": "watchf '**/*.js' -c 'eslint {}' -i 'public'",
-    "less": "lessc public-src/less/main.less public/css/main.css",
-    "less:watch": "watchf 'public-src/**/*.less' -c 'npm run less'",
-    "riot": "riot public-src/js/view/app public-src/js/_app-tags.js -m & riot public-src/js/view/console public-src/js/_console-tags.js -m",
-    "riot:watch": "riot public-src/js/view/app public-src/js/_app-tags.js -m -w & riot public-src/js/view/console public-src/js/_console-tags.js -m -w"
+    "less": "lessc public/src/less/main.less public/dist/main.css",
+    "less:watch": "watchf 'public/src/**/*.less' -c 'npm run less'",
+    "watchify": "npm run watchify:main-app & npm run watchify:console-app",
+    "watchify:main-app": "watchify -t riotify public/src/js/main-app.js -o public/dist/main.js -v",
+    "watchify:console-app": "watchify -t riotify public/src/js/console-app.js -o public/dist/console.js -v",
+    "browserify": "npm run browserify:main-app & npm run browserify:console-app",
+    "browserify:main-app": "browserify -t riotify public/src/js/main-app.js | uglifyjs -cm > public/dist/main.js",
+    "browserify:console-app": "browserify -t riotify public/src/js/console-app.js | uglifyjs -cm > public/dist/console.js",
+    "nodemon": "DEBUG=npostr:* nodemon --debug ./bin/www --ignore '**flycheck_*' --ignore 'public*'"
   },
   "repository": {
     "type": "git",
@@ -40,6 +47,7 @@
     "rimraf": "^2.4.2",
     "sequelize-cli": "^1.7.4",
     "supertest": "^1.0.1",
+    "uglify-js": "^2.4.24",
     "watchf": "^0.1.2",
     "watchify": "^3.3.1",
     "wiredep": "^2.2.2"

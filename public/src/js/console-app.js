@@ -1,7 +1,8 @@
 window.DEBUG = true;
 
 require('./polyfills');
-require('./_console-tags');
+
+require('./tags/posts-table.tag');
 
 var riot = require('riot');
 
@@ -12,7 +13,7 @@ function $$() {
   return document.querySelectorAll.apply(document, arguments);
 }
 
-var postsStore = require('./store/posts');
+var postsStore = require('./stores/posts.js');
 
 riot.mount('posts', {store: postsStore});
 

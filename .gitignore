@@ -1,8 +1,6 @@
 node_modules
 npm-debug.log
 bower_components
-public/js
-public/css
-public-src/js/_*tags.js
+public/dist
 tmp
 db.*.sqlite

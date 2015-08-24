@@ -1,4 +1,4 @@
-var d = require('../util').d('[m] posts');
+var d = require('../utils').d('[m] posts');
 
 module.exports = {
   fetch: function() {
