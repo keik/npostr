@@ -7,7 +7,8 @@ require('./polyfills');
 require('./utils')(global);
 
 // load libs
-var riot = require('riot');
+var riot = require('riot'),
+    marked = require('marked');
 
 // load parts for riot
 require('./tags/posts-table.tag');
@@ -24,6 +25,7 @@ function init() {
 
   // add event handlers
   $('#menu').addEventListener('click', onClickMenu);
+  document.addEventListener('keyup', onEditorKeyUp);
 }
 
 function onClickMenu(e) {
@@ -38,4 +40,24 @@ function onClickMenu(e) {
     mainEl.innerHTML = body;
     riot.mount('posts-table', {store: postsStore});
   });
+}
+
+/** rendering timer */
+var timer;
+
+/**
+ * Render Markdown
+ */
+function onEditorKeyUp(e) {
+  if (e.target !== $('#editor-plain'))
+    return;
+
+  // supress excessive rendering
+  if (timer)
+    return;
+
+  timer = setTimeout(function() {
+    $('#editor-rendered').innerHTML = marked(e.target.value);
+    timer = null;
+  }, 200);
 }

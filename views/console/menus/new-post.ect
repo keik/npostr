@@ -1,5 +1,5 @@
 <h2>New post</h2>
-<form action="/posts" method="post">
+<form class="new-post-form" action="/posts" method="post">
   <div>
     <label for="alias">alias</label><br/>
     <input name="alias" type="text"/>
@@ -8,9 +8,17 @@
     <label for="title">title</label><br/>
     <input name="title" type="text"/>
   </div>
-  <div>
-    <label for="content">content</label><br/>
-    <textarea name="content"></textarea>
+  <div class="editor">
+    <div class="editor-area">
+      <label for="content">content</label><br/>
+      <textarea id="editor-plain" name="content"></textarea>
+    </div>
+    <div class="separator">
+    </div>
+    <div class="editor-area">
+      <label for="content">content</label><br/>
+      <div id="editor-rendered"></div>
+    </div>
   </div>
   <input type="submit"/>
 </form>
