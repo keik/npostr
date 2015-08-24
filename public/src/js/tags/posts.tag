@@ -1,5 +1,4 @@
 <posts>
-
   <section class="post" each={ posts }>
     <h1>{title}</h1>
     <p>
@@ -9,9 +8,10 @@
   </section>
 
   <script>
+    var d = require('debug')('[v] posts.tag');
+
     require('./raw.tag');
 
-    var d = require('../utils').d('[v] posts');
     var self = this;
     var postsStore = opts.store;
 
@@ -28,7 +28,7 @@
       // highlighting
       var codes = self.root.querySelectorAll('pre code');
       for (var i = 0, len = codes.length; i < len; i++) {
-        window.hljs.highlightBlock(codes[i]);
+        global.hljs.highlightBlock(codes[i]);
       }
     }).catch(function(e) {
       throw e;

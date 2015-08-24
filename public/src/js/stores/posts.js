@@ -1,5 +1,3 @@
-var d = require('../utils').d('[m] posts');
-
 module.exports = {
   fetch: function() {
     return fetch('/posts.json', {method: 'get'});

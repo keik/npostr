@@ -1,31 +1,27 @@
-<posts>
-  <section>
-    <h1>POSTS</h1>
+<posts-table>
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Alias</th>
+        <th>Title</th>
+        <th>Created At</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr each={ posts }>
+        <td>{ id }</td>
+        <td>{ alias }</td>
+        <td>{ title }</td>
+        <td>{ createdAt }</td>
+        <td><button onclick={ destroy }>x</button></td>
+      </tr>
+    </tbody>
+  </table>
 
-    <table>
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Alias</th>
-          <th>Title</th>
-          <th>Created At</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr each={ posts }>
-          <td>{ id }</td>
-          <td>{ alias }</td>
-          <td>{ title }</td>
-          <td>{ createdAt }</td>
-          <td><button onclick={ destroy }>x</button></td>
-        </tr>
-      </tbody>
-    </table>
-
-  </section>
   <script>
-    var d = require('../utils').d('[v] posts');
+    var d = require('debug')('[v] posts-table.tag');
 
     var self = this;
     var postsStore = opts.store;
@@ -62,4 +58,4 @@
 
     this.sync();
   </script>
-</posts>
+</posts-table>

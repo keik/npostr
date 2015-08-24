@@ -1,17 +1,21 @@
-/* eslint no-console: [0] */
+module.exports = function(context) {
 
-module.exports = {
+  context.$ = context.$ || $;
+  context.$$ = context.$$ || $$;
 
   /**
-   * easy logger for client
+   * alias
+   * @returns {Function} querySelector
    */
-  d: function(tag) {
-    return function() {
-      var newArgs = Array.prototype.concat.apply(
-        ['%c' + tag.concat('                ').substr(0, 16), 'font-weight: bold; color: #0088ff'],
-        arguments
-      );
-      if (window.DEBUG) console.log.apply(console, newArgs);
-    };
+  function $() {
+    return document.querySelector.apply(document, arguments);
+  }
+
+  /**
+   * alias
+   * @returns {Function} querySelectorAll
+   */
+  function $$() {
+    return context.$$ || document.querySelectorAll.apply(document, arguments);
   }
 };
