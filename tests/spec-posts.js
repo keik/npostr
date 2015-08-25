@@ -1,15 +1,25 @@
-/* globals describe: false it: false, beforeEach: false */
+/* globals describe: false it: false, before: false, beforeEach: false */
 
 var assert = require('chai').assert,
     request = require('supertest'),
     async = require('async'),
-    app = require('../app');
+    app = require('../app'),
+    models = require('../models');
 
-function str() { return JSON.stringify.apply({}, arguments); }
-function parse() { return JSON.parse.apply({}, arguments); }
-function recreateTable() {
-  // stub
+// =============================================================================
+// utils
+
+function str() {
+  return JSON.stringify.apply({}, arguments);
 }
+function parse() {
+  return JSON.parse.apply({}, arguments);
+}
+
+/**
+ * @param {Array.<String>} titles for dummy posts
+ * @param {Function} cb Callback function for verify
+ */
 function createDummyPosts(titles, cb) {
   async.each(titles, function(title, done) {
     var data = {
@@ -18,8 +28,6 @@ function createDummyPosts(titles, cb) {
         'this is a post of ' + title,
       alias: title
     };
-
-    // verify
     request(app).post('/posts').send(data).end(done);
   }, function(err) {
     if (err) throw err;
@@ -27,8 +35,8 @@ function createDummyPosts(titles, cb) {
   });
 }
 
-
-var models = require('../models');
+// =============================================================================
+// main
 
 before(function(done) {
   models.sequelize.sync().then(function() {
@@ -49,7 +57,7 @@ describe('`posts` method', function() {
       createDummyPosts(['d1', 'd2', 'd3'], function() {
 
         // verify
-        request(app).get('/posts').expect(200).expect(function(res) {
+        request(app).get('/posts.json').expect(200).expect(function(res) {
           if (res.body.length !== 3) throw new Error('body length are ' + res.body.length + ', not 3');
         }).end(done);
       });
@@ -60,7 +68,7 @@ describe('`posts` method', function() {
       // setup (no posts)
 
       // verify
-      request(app).get('/posts').expect(200).expect(function(res) {
+      request(app).get('/posts.json').expect(200).expect(function(res) {
         if (res.body.length !== 0) throw new Error('body length are ' + res.body.length + ', not 0');
       }).end(done);
     });
@@ -86,28 +94,6 @@ describe('`posts` method', function() {
         request(app).get('/posts/d4').expect(404).end(done);
       });
     });
-
-    // it('when spefify :id valid alias, response 200 and body with a specified post', function(done) {
-    //   // setup
-    //   createDummyPosts(['d1', 'd2', 'd3']);
-    //
-    //   // verify
-    //   req.get('http://localhost:3000/posts/d1-alias', function(e, r, body) {
-    //     assert.fail(true);
-    //     done();
-    //   });
-    // });
-    //
-    // it('when spefify :id NOT valid alias, response 404 and body with a `not found` message', function(done) {
-    //   // setup
-    //   createDummyPosts(['d1', 'd2', 'd3']);
-    //
-    //   // verify
-    //   req.get('http://localhost:3000/posts/d4-alias', function(e, r, body) {
-    //     assert.fail(true);
-    //     done();
-    //   });
-    // });
 
   }); // GET /posts/:id
 
