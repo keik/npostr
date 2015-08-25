@@ -7,10 +7,13 @@ var fs = require('fs');
 var morgan = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var session = require('express-session');
+var passport = require('passport');
 
 var routes = require('./routes/index');
 var rconsole = require('./routes/console');
 var rposts = require('./routes/posts');
+var rlogin = require('./routes/login');
 
 var ECT = require('ect');
 
@@ -31,6 +34,19 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public/dist')));
+app.use(session({secret: 'keyboard cat'}));
+app.use(passport.initialize());
+app.use(passport.session());
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
+});
+passport.deserializeUser(function(id, done) {
+  done(null, {username: 'dummy'});
+  // TODO
+  // models.User.findById(id, function(err, user) {
+  //   done(err, user);
+  // });
+});
 
 // content-negotiation support for `.ext` URI
 app.use(function(req, res, next) {
@@ -54,6 +70,7 @@ app.use(function(req, res, next) {
 app.use('/', routes);
 app.use('/console', rconsole);
 app.use('/posts', rposts);
+app.use('/login', rlogin);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
