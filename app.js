@@ -9,6 +9,9 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var passport = require('passport');
+var flash = require('connect-flash');
+var realm = require('./helpers/passport-realm');
+var models = require('./models');
 
 var routes = require('./routes/index');
 var rconsole = require('./routes/console');
@@ -27,26 +30,32 @@ app.engine('ect', ectRenderer.render);
 // uncomment after placing your favicon in /public
 // app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(morgan('dev'));
-var accessLogStream = fs.createWriteStream(__dirname + '/access.log', {flags: 'a'});
+var accessLogStream = fs.createWriteStream(path.join(__dirname, '/access.log'), {flags: 'a'});
 app.use(morgan('combined', {stream: accessLogStream}));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public/dist')));
-app.use(session({secret: 'keyboard cat'}));
+app.use(session({secret: 'keyboard cat', resave: false, saveUninitialized: false}));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(flash());
 passport.serializeUser(function(user, done) {
+  d('#serialUser');
   done(null, user.id);
 });
 passport.deserializeUser(function(id, done) {
-  done(null, {username: 'dummy'});
-  // TODO
-  // models.User.findById(id, function(err, user) {
-  //   done(err, user);
-  // });
+  d('#deserialUser');
+  models.User.findById(id).then(function(user) {
+    done(null, {username: user.get('id')});
+  }).error(function(err) {
+    done(err);
+  });
 });
+
+// authentication filter
+app.use(realm([/^\/console$/]));
 
 // content-negotiation support for `.ext` URI
 app.use(function(req, res, next) {

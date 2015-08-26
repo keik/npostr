@@ -8,32 +8,39 @@ var express = require('express'),
 passport.use(new LocalStrategy(
   function(username, password, done) {
     d('passport LocalStrategy');
-    if (username === 'dummy')
-      return done(null, {id: 'dummy'});
-    return done(null, false);
 
-    // TODO (snippets)
-    // models.User.findOne({username: username}, function(err, user) {
-    //   if (err)
-    //     return done(err);
-    //   if (!user)
-    //     return done(null, false, {message: 'Incorrect username.'});
-    //   if (!user.validPassword(password))
-    //     return done(null, false, {message: 'Incorrect password.'});
-    //   return done(null, user);
-    // });
+    models.User.findOne({
+      where: {id: username}
+    }).then(function(user) {
+      if (user) {
+        return user.verifyPassword(password, function(result) {
+          if (result)
+            return done(null, user);
+          return done(null, false, {message: 'Incorrect username or password.'});
+        });
+      }
+      return done(null, false, {message: 'Incorrect username or password.'});
+    }).error(function(err) {
+      throw err;
+    });
   }
 ));
 
 var router = express.Router();
 
+var auchenticateOption = {
+  failureRedirect: '/login',
+  failureFlash: true
+};
+
 router.get('/', index);
-router.post('/', passport.authenticate('local', {successRedirect: '/', failureRedirect: '/login'}));
+router.post('/', passport.authenticate('local', auchenticateOption));
 
 function index(req, res) {
   d('#index');
 
-  res.render('login');
+  auchenticateOption.successRedirect = req.session.fromUrl || '/';
+  res.render('login', {errors: req.flash('error')});
 }
 
 module.exports = router;

@@ -1,5 +1,13 @@
 <% extend 'layout.ect' %>
 
+<% if @errors?.length : %>
+<ul>
+  <% for error in @errors : %>
+  <li><%= error %></li>
+  <% end %>
+</ul>
+<% end %>
+
 <!-- TODO layout -->
 <form action="/login" method="post">
   <div>

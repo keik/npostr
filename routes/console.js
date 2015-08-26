@@ -9,10 +9,7 @@ router.get('/menu/:id', menu);
 function index(req, res, next) {
   d('#index');
 
-  if (req.user)
-    res.render('console/index', {username: req.user.username});
-  else
-    res.redirect('/login');
+  res.render('console/index', {username: req.user.username});
 }
 
 function menu(req, res, next) {

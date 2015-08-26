@@ -30,6 +30,25 @@ models.sequelize.sync().then(function() {
   server.listen(port);
   server.on('error', onError);
   server.on('listening', onListening);
+
+  // TODO initialize admin user
+  models.User.findById('admin').then(function(user) {
+    if (user == null) {
+      console.log('not exist admin user. create now...');
+      models.User.hashPassword('admin', function(encrypted) {
+        models.User.create({
+          id: 'admin',
+          password: encrypted
+        }).then(function(user) {
+          console.log('created admin user');
+        }).error(function(err) {
+          throw err;
+        });
+      });
+    }
+  }).error(function(err) {
+    throw err;
+  });
 });
 
 /**
