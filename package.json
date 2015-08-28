@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "start": "node ./bin/www",
-    "test": "DEBUG=npostr:* NODE_ENV=test mocha tests/spec* --reporter nyan --debug",
+    "test": "NODE_ENV=test mocha tests/spec* --reporter nyan --debug",
     "\n* USEFUL frontends": "",
     "start:dev": "npm run lint:watch & npm run less:watch & npm run watchify & npm run nodemon",
     "build": "npm run clean && npm run lint && npm run less && npm run browserify",

@@ -29,9 +29,17 @@ app.engine('ect', ectRenderer.render);
 
 // uncomment after placing your favicon in /public
 // app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(morgan('dev'));
-var accessLogStream = fs.createWriteStream(path.join(__dirname, '/access.log'), {flags: 'a'});
-app.use(morgan('combined', {stream: accessLogStream}));
+
+switch (app.get('env')) {
+case 'development':
+  app.use(morgan('dev'));
+  break;
+case 'production':
+  var accessLogStream = fs.createWriteStream(path.join(__dirname, '/access.log'), {flags: 'a'});
+  app.use(morgan('combined', {stream: accessLogStream}));
+  break;
+default:
+}
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
@@ -92,7 +100,7 @@ app.use(function(req, res, next) {
 
 // development error handler
 // will print stacktrace
-if (app.get('env') === 'development' || app.get('env') === 'test') {
+if (app.get('env') === 'development') {
   app.use(function(err, req, res, next) {
     d(err.stack);
     res.status(err.status || 500);
