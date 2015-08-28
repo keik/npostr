@@ -5,6 +5,18 @@ var express = require('express'),
     LocalStrategy = require('passport-local').Strategy,
     models = require('../models');
 
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done) {
+  models.User.findById(id).then(function(user) {
+    done(null, {username: user.get('id')});
+  }).error(function(err) {
+    done(err);
+  });
+});
+
 passport.use(new LocalStrategy(
   function(username, password, done) {
     d('passport LocalStrategy');
@@ -26,21 +38,20 @@ passport.use(new LocalStrategy(
   }
 ));
 
-var router = express.Router();
-
 var auchenticateOption = {
   successRedirect: '/',
   failureRedirect: '/login',
   failureFlash: true
 };
 
+var router = express.Router();
 router.get('/', index);
 router.post('/', passport.authenticate('local', auchenticateOption));
 
 function index(req, res) {
   d('#index');
 
-  // set redirect url
+  // update redirect url
   auchenticateOption.successRedirect = req.session.fromUrl || '/';
   res.render('login', {errors: req.flash('error')});
 }

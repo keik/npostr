@@ -4,11 +4,8 @@ var express = require('express'),
     marked = require('marked'),
     models = require('../models');
 
-
-var router = express.Router();
-
-/* GET home page. */
 /* eslint no-spaced-func: [0] */
+var router = express.Router();
 router.get   ('/',         index);
 router.get   ('/:id',      show);
 router.post  ('/',         create);

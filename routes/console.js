@@ -1,8 +1,8 @@
 var d = require('debug')('npostr:router:console');
 
 var express = require('express');
-var router = express.Router();
 
+var router = express.Router();
 router.get('/', index);
 router.get('/menu/:id', menu);
 
