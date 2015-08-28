@@ -8,7 +8,7 @@ module.exports = function(realm) {
       });
       if (requireAuth) {
         req.session.fromUrl = req.originalUrl;
-        return res.redirect('login');
+        return res.redirect('/login');
       }
     }
     return next();

@@ -29,6 +29,7 @@ passport.use(new LocalStrategy(
 var router = express.Router();
 
 var auchenticateOption = {
+  successRedirect: '/',
   failureRedirect: '/login',
   failureFlash: true
 };
@@ -39,6 +40,7 @@ router.post('/', passport.authenticate('local', auchenticateOption));
 function index(req, res) {
   d('#index');
 
+  // set redirect url
   auchenticateOption.successRedirect = req.session.fromUrl || '/';
   res.render('login', {errors: req.flash('error')});
 }
