@@ -1,7 +1,6 @@
 <edit-post>
   <h2>Edit post</h2>
-  <form class="edit-post-form" action="/posts/{ post.id }" method="post">
-    <input type="hidden" name="method" value="update"/>
+  <form action="/posts/{ post.id }?method=put" method="post">
     <div>
       <label for="alias">alias</label><br/>
       <input name="alias" type="text" value={ post.alias }/>
@@ -22,12 +21,13 @@
         <div id="editor-rendered"></div>
       </div>
     </div>
-    <input type="submit" value="update"/>
+    <input type="submit" value="Update"/>
   </form>
 
   <script>
     var d = require('debug')('[v] edit-post.tag');
 
+    var self = this;
     var marked = require('marked');
 
     d('loaded', opts);
@@ -50,6 +50,9 @@
       }, 200);
     };
 
+    this.on('mount', function() {
+      $('#editor-rendered').innerHTML = marked($('#editor-plain').value);
+    });
   </script>
 
 </edit-post>

@@ -92,7 +92,7 @@ describe('[`posts` method]', function() {
 
   describe('POST /posts', function() {
 
-    it('with parameters of complete post data, response 201', function(done) {
+    it('with parameters of complete body, response 201', function(done) {
       // setup
       var data = {
         title: 'test 1',
@@ -109,10 +109,9 @@ describe('[`posts` method]', function() {
 
   describe('PUT /posts/:id', function() {
 
-    it('with parameters of complete post data, response 200', function(done) {
+    it('with parameters of complete body, response 200', function(done) {
       // setup
       createDummyPosts('d1', function() {
-
         request(app).get('/posts/d1').expect(200).end(function(err, res) {
           if (err) throw err;
 
@@ -134,11 +133,31 @@ describe('[`posts` method]', function() {
       });
     });
 
-  }); // PUT /posts/:id
+    it('with parameters of complete post data and pseudo method parameter `method=put`, response 200', function(done) {
+      // setup
+      createDummyPosts('d1', function() {
+        request(app).get('/posts/d1').expect(200).end(function(err, res) {
+          if (err) throw err;
 
-  describe('DELETE /posts/:id', function() {
+          // verify to be created `d1`
+          assert.equal(res.body.title, 'd1');
 
-    it('with parameters of complete post data, response 200', function(done) {
+          // exercise
+          request(app).post('/posts/d1?method=put').send({title: 'Update d1'}).expect(200).end(function(err, res) {
+            if (err) throw err;
+
+            // verify to be updated `Update d1` from `d1`
+            request(app).get('/posts/d1').expect(200).end(function(err, res) {
+              if (err) throw err;
+              assert.equal(res.body.title, 'Update d1');
+              done();
+            });
+          });
+        });
+      });
+    });
+
+    it('with no pseudo method parameter `method=put`, response 405', function(done) {
       // setup
       createDummyPosts('d1', function() {
 
@@ -149,7 +168,46 @@ describe('[`posts` method]', function() {
           assert.equal(res.body.title, 'd1');
 
           // exercise
+          request(app).post('/posts/d1').send({title: 'Update d1'}).expect(405).end(done);
+        });
+      });
+    });
+
+  }); // PUT /posts/:id
+
+  describe('DELETE /posts/:id', function() {
+
+    it('response 200', function(done) {
+      // setup
+      createDummyPosts('d1', function() {
+        request(app).get('/posts/d1').expect(200).end(function(err, res) {
+          if (err) throw err;
+
+          // verify to be created `d1`
+          assert.equal(res.body.title, 'd1');
+
+          // exercise
           request(app).delete('/posts/d1').expect(200).end(function(err, res) {
+            if (err) throw err;
+
+            // verify to be updated `Update d1` from `d1`
+            request(app).get('/posts/d1').expect(404, done);
+          });
+        });
+      });
+    });
+
+    it('with pseudo-method parameter `method=delete`, response 200', function(done) {
+      // setup
+      createDummyPosts('d1', function() {
+        request(app).get('/posts/d1').expect(200).end(function(err, res) {
+          if (err) throw err;
+
+          // verify to be created `d1`
+          assert.equal(res.body.title, 'd1');
+
+          // exercise
+          request(app).get('/posts/d1?method=delete').expect(200).end(function(err, res) {
             if (err) throw err;
 
             // verify to be updated `Update d1` from `d1`

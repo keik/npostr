@@ -28,7 +28,6 @@
     d('loaded', opts);
 
     var self = this;
-    // var postsStore = opts.store;
     var postsStore = require('../stores/posts.js');
     this.on('update', function() {
       d('#updated');

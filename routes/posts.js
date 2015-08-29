@@ -11,15 +11,16 @@ marked.setOptions({
 /* eslint no-spaced-func: [0] */
 var router = express.Router();
 router.get   ('/',         index);
-router.get   ('/:id',      show);
+router.get   ('/:id',      showOrDestroy); // pseudo DELETE method with `method="delete"`
 router.post  ('/',         create);
+router.post  ('/:id',      updateOr405);   // pseudo PUT method with `method="put"`
 router.put   ('/:id',      update);
 router.delete('/:id',      destroy);
 
 function index(req, res, next) {
   d('#index');
 
-  models.Post.findAll().then(function(posts) {
+  return models.Post.findAll().then(function(posts) {
     res.format({
       html: function() {
         return res.render('posts/index', {posts: posts});
@@ -29,6 +30,14 @@ function index(req, res, next) {
       }
     });
   });
+}
+
+function showOrDestroy(req, res, next) {
+  d('#index');
+
+  if (req.query.method === 'delete')
+    return destroy(req, res, next);
+  return show(req, res, next);
 }
 
 function show(req, res, next) {
@@ -64,15 +73,22 @@ function create(req, res, next) {
 
   // TODO move validation to model logic
   var alias = req.body.alias || String(Number(new Date()));
-  if (alias.match(/[^0-9a-z\-]/)) {
+  if (alias.match(/[^0-9a-z\-]/))
     throw new Error('`alias` must not contain `0-9`, `a-z` and `-`');
-  }
 
   models.Post.create(req.body).then(function() {
     return res.sendStatus(201);
   }).error(function(e) {
     throw e;
   });
+}
+
+function updateOr405(req, res, next) {
+  d('#update');
+
+  if (req.query.method === 'put')
+    return update(req, res, next);
+  return res.sendStatus(405);
 }
 
 function update(req, res, next) {
