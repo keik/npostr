@@ -1,31 +1,16 @@
 <% extend 'layout.ect' %>
 
-<!-- TODO layout -->
-logged in as <%= @username %>
+<header>
+  <nav>
+    <ul>
+      <li><a href="/">Top</a></li>
+      <li><form action="/session" method="post">
+        <input type="hidden" name="method" value="delete">
+        <button>Log out</button>
+      </form></li>
+    </ul>
+  </nav>
+</header>
 
-<div class="console-container">
-  <section class="side">
-    <nav>
-      <ul id="menu">
-        <li><a href="#new-post">New post</a></li>
-        <li><a href="#all-posts">All posts</a></li>
-        <li class="separator"></li>
-        <li><a href="#configurations">Configurations</a></li>
-      </ul>
-      <ul id="menu" class="bottom">
-        <li><a href="/">Top</a></li>
-      </ul>
-    </nav>
-  </section>
-
-  <section id="main" class="main">
-    <section>
-      dummy
-    </section>
-  </section>
-</div>
+<console-app username="<%= @username %>"></console-app>
 <script src="/console.js"></script>
-<script>
-  // dev
-  $('[href="#new-post"]').click();
-</script>

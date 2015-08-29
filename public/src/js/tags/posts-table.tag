@@ -2,7 +2,8 @@
   <table>
     <thead>
       <tr>
-        <th>#</th>
+        <th></th>
+        <th>ID</th>
         <th>Alias</th>
         <th>Title</th>
         <th>Created At</th>
@@ -11,11 +12,12 @@
     </thead>
     <tbody>
       <tr each={ posts }>
+        <td><input type="checkbox"/></td>
         <td>{ id }</td>
         <td>{ alias }</td>
         <td>{ title }</td>
         <td>{ createdAt }</td>
-        <td><button onclick={ destroy }>x</button></td>
+        <td><button onclick={ edit }>Edit</button> <button onclick={ destroy }>delete</button></td>
       </tr>
     </tbody>
   </table>
@@ -23,9 +25,11 @@
   <script>
     var d = require('debug')('[v] posts-table.tag');
 
-    var self = this;
-    var postsStore = opts.store;
+    d('loaded', opts);
 
+    var self = this;
+    // var postsStore = opts.store;
+    var postsStore = require('../stores/posts.js');
     this.on('update', function() {
       d('#updated');
     });
@@ -41,6 +45,19 @@
       }).catch(function(e) {
         throw e;
       });
+    }
+
+    this.edit = function(e) {
+      d('#edit');
+
+      $('console-app .main').innerHTML = '<edit-post/>';
+
+      fetch('/posts/' + this.id, {method: 'get'}).then(function(res) {
+        return res.text();
+      }).then(function(body) {
+        riot.mount('edit-post', {post: JSON.parse(body)});
+      });
+
     }
 
     this.destroy = function(e) {

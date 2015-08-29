@@ -1,17 +1,41 @@
 header {
+  padding: 0 12px;
+  background-color: #444444;
+
   h1 {
     float: left;
   }
+
   nav {
     float: right;
+
     ul {
+      padding: 0;
+      margin: 0;
       list-style: none;
+
       li {
         float: left;
         padding: 0 0 0 12px;
       }
     }
   }
+
+  a, button {
+    display: inline-block;
+    padding: 0;
+    margin: 8px 0;
+    height: 24px;
+    line-height: 24px;
+  }
+
+  a {
+    color: #dddddd;
+  }
+
+  button {
+  }
+
   &:after {
     content: '';
     display: table;

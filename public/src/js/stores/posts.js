@@ -1,3 +1,7 @@
+var d = require('debug')('[v] posts-table.tag');
+
+d('loaded');
+
 module.exports = {
   fetch: function() {
     return fetch('/posts.json', {method: 'get'});
