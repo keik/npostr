@@ -12,6 +12,8 @@ var assert = require('chai').assert,
  * @param {Function} cb Callback function for verify
  */
 function createDummyPosts(titles, cb) {
+  titles = Array.isArray(titles) ? titles : [titles];
+
   async.each(titles, function(title, done) {
     var data = {
       title: title,
@@ -39,7 +41,7 @@ beforeEach(function() {
   models.Post.truncate();
 });
 
-describe('`posts` method', function() {
+describe('[`posts` method]', function() {
 
   describe('GET /posts', function() {
 
@@ -104,5 +106,59 @@ describe('`posts` method', function() {
     });
 
   }); // POST /posts
+
+  describe('PUT /posts/:id', function() {
+
+    it('with parameters of complete post data, response 200', function(done) {
+      // setup
+      createDummyPosts('d1', function() {
+
+        request(app).get('/posts/d1').expect(200).end(function(err, res) {
+          if (err) throw err;
+
+          // verify to be created `d1`
+          assert.equal(res.body.title, 'd1');
+
+          // exercise
+          request(app).put('/posts/d1').send({title: 'Update d1'}).expect(200).end(function(err, res) {
+            if (err) throw err;
+
+            // verify to be updated `Update d1` from `d1`
+            request(app).get('/posts/d1').expect(200).end(function(err, res) {
+              if (err) throw err;
+              assert.equal(res.body.title, 'Update d1');
+              done();
+            });
+          });
+        });
+      });
+    });
+
+  }); // PUT /posts/:id
+
+  describe('DELETE /posts/:id', function() {
+
+    it('with parameters of complete post data, response 200', function(done) {
+      // setup
+      createDummyPosts('d1', function() {
+
+        request(app).get('/posts/d1').expect(200).end(function(err, res) {
+          if (err) throw err;
+
+          // verify to be created `d1`
+          assert.equal(res.body.title, 'd1');
+
+          // exercise
+          request(app).delete('/posts/d1').expect(200).end(function(err, res) {
+            if (err) throw err;
+
+            // verify to be updated `Update d1` from `d1`
+            request(app).get('/posts/d1').expect(404, done);
+          });
+        });
+      });
+    });
+
+  }); // DELETE /posts/:id
 
 });
