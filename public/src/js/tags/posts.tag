@@ -4,7 +4,7 @@
     <p>
       {createdAt}
     </p>
-    <raw content={ htmlizedContent }></raw>
+    <raw content={ htmlContent }></raw>
   </section>
 
   <script>
