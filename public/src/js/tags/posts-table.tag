@@ -24,10 +24,10 @@
 
   <script>
     var d = require('debug')('[v] posts-table.tag');
-
     d('loaded', opts);
 
     var self = this;
+
     var postsStore = require('../stores/posts.js');
     this.on('update', function() {
       d('#updated');
@@ -48,15 +48,9 @@
 
     this.edit = function(e) {
       d('#edit');
-
-      $('console-app .main').innerHTML = '<edit-post/>';
-
-      fetch('/posts/' + this.id, {method: 'get'}).then(function(res) {
-        return res.text();
-      }).then(function(body) {
-        riot.mount('edit-post', {post: JSON.parse(body)});
-      });
-
+      if (typeof opts.editPost !== 'function')
+        throw new Error('posts-table.tag must have `editPost` function in opts');
+      opts.editPost(this.id);
     }
 
     this.destroy = function(e) {

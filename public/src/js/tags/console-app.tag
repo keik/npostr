@@ -10,30 +10,29 @@
         </ul>
       </nav>
     </section>
-
     <section id="main" class="main">
-      <posts-table/>
     </section>
-
   </div>
 
   <script>
     var d = require('debug')('[v] console-app.tag');
-
     d('loaded', opts);
 
+    var self = this;
+
+    /** inflate UI of a selected menu */
     this.onClickMenu = function(e) {
       d('#onClickMenu', e);
 
+      // delegate event on `a` els
       if (e.target.nodeName !== 'A') {
         return;
       }
 
-      d('fire');
       switch (e.target.getAttribute('href')) {
         case '#all-posts':
           $('#main').innerHTML = '<posts-table/>';
-          riot.mount('posts-table');
+          riot.mount('posts-table', {editPost: editPost});
           break;
         case '#new-post':
           $('#main').innerHTML = '<new-post/>';
@@ -46,6 +45,19 @@
         default:
       }
     }
-  </script>
 
+    /**
+     * inflate UI of edit post
+     * @param {String} id Post ID
+     */
+    function editPost(id) {
+      d('#editPost');
+      self.root.querySelector('#main').innerHTML = '<edit-post/>';
+      fetch('/posts/' + id, {method: 'get'}).then(function(res) {
+        return res.text();
+      }).then(function(body) {
+        riot.mount('edit-post', {post: JSON.parse(body)});
+      });
+    };
+  </script>
 </console-app>
