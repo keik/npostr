@@ -1,8 +1,10 @@
 var d = require('debug')('npostr:router:posts');
 
-var express = require('express'),
+var path = require('path'),
+    express = require('express'),
     marked = require('marked'),
-    models = require('../models');
+    models = require('../models'),
+    config = require(path.join(path.dirname(module.parent.filename), 'config/config'));
 
 marked.setOptions({
   langPrefix: ''
@@ -20,7 +22,10 @@ router.delete('/:id',      destroy);
 function index(req, res, next) {
   d('#index');
 
-  return models.Post.findAll().then(function(posts) {
+  return models.Post.findAll({
+    order: [['id', 'DESC']],
+    limit: req.query.count || config.count
+  }).then(function(posts) {
     res.format({
       html: function() {
         return res.render('posts/index', {posts: posts});
@@ -72,8 +77,8 @@ function create(req, res, next) {
   d('#create');
 
   // TODO move validation to model logic
-  var alias = req.body.alias || String(Number(new Date()));
-  if (alias.match(/[^0-9a-z\-]/))
+  req.body.alias = req.body.alias || String(Number(new Date()));
+  if (req.body.alias.match(/[^0-9a-z\-]/))
     throw new Error('`alias` must not contain `0-9`, `a-z` and `-`');
 
   models.Post.create(req.body).then(function() {

@@ -36,7 +36,7 @@
     this.sync = function() {
       d('#sync');
 
-      postsStore.fetch().then(function(res) {
+      postsStore.fetch({count: 100}).then(function(res) {
         return res.text();
       }).then(function(body) {
         d('#sync success');
