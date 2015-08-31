@@ -1,29 +1,60 @@
 <settings>
 
-  <h2>Settings</h2>
-  <form action="#" method="post">
-    <div>
-      <label for="alias">User name</label><br/>
-      <input name="alias" type="text" value="{ users.username }"/>
-    </div>
-    <input type="submit"/>
-  </form>
+  <h1>Settings</h1>
 
-  <form action="#" method="post">
-    <div>
-      <label for="old-password">Old password</label><br/>
-      <input name="old-password" type="password"/>
-    </div>
-    <div>
-      <label for="password">New Password</label><br/>
-      <input name="password" type="password"/>
-    </div>
-    <div>
-      <label for="password-confirmation">Confirm new Password</label><br/>
-      <input name="password-confirmation" type="password"/>
-    </div>
-    <input type="submit"/>
-  </form>
+  <ul class="tab">
+    <li class="active"><a href="">Profile</a></li>
+    <li><a href="">Looks</a></li>
+  </ul>
+
+  <section>
+    <h2>Profile</h2>
+    <form action="#" method="post">
+      <div>
+        <img style="width: 80px; height: 80px; background-color: gray"/><br/>
+        <input type="file" name="user-image"/>
+      </div>
+      <div>
+        <label for="alias">User name</label><br/>
+        <input name="alias" type="text" value="{ users.username }"/>
+      </div>
+      <section>
+        <h3>Password</h3>
+        <div>
+          <label for="old-password">Old password</label><br/>
+          <input name="old-password" type="password"/>
+        </div>
+        <div>
+          <label for="password">New Password</label><br/>
+          <input name="password" type="password"/>
+        </div>
+        <div>
+          <label for="password-confirmation">Confirm new Password</label><br/>
+          <input name="password-confirmation" type="password"/>
+        </div>
+        <button class="btn btn-primary">Update</button>
+      </section>
+    </form>
+  </section>
+
+  <section>
+    <h2>Looks</h2>
+    <form>
+      <div>
+        <label for="max-posts">Max posts</label><br/>
+        <input id="max-posts" name="max-posts" type="number"/>
+      </div>
+      <div>
+        <label for="header-html">Header HTML</label><br/>
+        <textarea id="header-html" name="header-html"/>
+      </div>
+      <div>
+        <label for="footer-html">Footer HTML</label><br/>
+        <textarea id="footer-html" name="footer-html"/>
+      </div>
+      <buton class="btn btn-primary">Update</buton>
+    </form>
+  </section>
 
   <script>
     var d = require('debug')('[v] settings.tag');

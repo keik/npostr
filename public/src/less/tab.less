@@ -1,0 +1,39 @@
+.tab {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  border-bottom: 1px solid #ccc;
+
+  li {
+    background-color: white;
+    position: relative;
+    bottom: -1px;
+    float: left;
+    padding: 0px 16px;
+    height: 40px;
+    line-height: 40px;
+    border-bottom: 1px solid #ccc;
+
+    &.active {
+      border-top: 1px solid #ccc;
+      border-right: 1px solid #ccc;
+      border-bottom: none;
+      border-left: 1px solid #ccc;
+    }
+
+    &:hover {
+      background-color: #eeeeee;
+    }
+
+    a {
+      display: block;
+    }
+
+  }
+
+  &:after {
+    content: ' ';
+    display: table;
+    clear: both;
+  }
+}
