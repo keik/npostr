@@ -11,6 +11,7 @@
       </nav>
     </section>
     <section id="main" class="main">
+      <posts-table/>
     </section>
   </div>
 

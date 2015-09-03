@@ -17,7 +17,7 @@
         <td>{ alias }</td>
         <td>{ title }</td>
         <td>{ createdAt }</td>
-        <td><button onclick={ edit }>Edit</button> <button onclick={ destroy }>delete</button></td>
+        <td><button class="btn" onclick={ edit }>Edit</button> <button class="btn btn-danger" onclick={ destroy }>delete</button></td>
       </tr>
     </tbody>
   </table>

@@ -21,13 +21,12 @@
         <div id="editor-rendered"></div>
       </div>
     </div>
-    <input type="submit" value="Update"/>
+    <button class="btn btn-primary">Update</button>
   </form>
 
   <script>
     var d = require('debug')('[v] edit-post.tag');
 
-    var self = this;
     var marked = require('marked');
 
     d('loaded', opts);

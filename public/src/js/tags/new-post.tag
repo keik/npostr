@@ -21,7 +21,7 @@
         <div id="editor-rendered"></div>
       </div>
     </div>
-    <input type="submit"/>
+    <button class="btn btn-primary">Create</button>
   </form>
 
   <script>
