@@ -59,7 +59,7 @@ app.use(extNegotiator);
 app.use('/',        require('./routes/index'));
 app.use('/console', require('./routes/console'));
 app.use('/posts',   require('./routes/posts'));
-app.use('/login',   require('./routes/login'));
+app.use('/',        require('./routes/session'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

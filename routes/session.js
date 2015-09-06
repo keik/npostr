@@ -1,4 +1,4 @@
-var d = require('debug')('npostr:router:login');
+var d = require('debug')('npostr:router:session');
 
 var express = require('express'),
     passport = require('passport'),
@@ -45,15 +45,22 @@ var auchenticateOption = {
 };
 
 var router = express.Router();
-router.get('/', index);
-router.post('/', passport.authenticate('local', auchenticateOption));
 
-function index(req, res) {
-  d('#index');
+router.get('/login', login);
+router.post('/sessions', passport.authenticate('local', auchenticateOption));
+router.post('/logout', logout);
+
+function login(req, res) {
+  d('#login');
 
   // update redirect url
   auchenticateOption.successRedirect = req.session.fromUrl || '/';
   res.render('login', {errors: req.flash('error')});
+}
+
+function logout(req, res) {
+  req.logout();
+  res.redirect('/');
 }
 
 module.exports = router;
